@@ -31,21 +31,21 @@ spec:
             - name: MONGO_CONNECTION_URL
               value: "mongodb://jormungandr:LIwn1In32LdowPqma@172.30.10.75:41000/?authSource=admin&replicaSet=rslionx&readPreference=secondary"
             - name: REDIS_HOST_URL
-              value: redis://jormungandr:oUjqwnmdDSA391dja@172.30.11.235:6379
+              value: "redis://jormungandr:oUjqwnmdDSA391dja@172.30.11.235:6379"
             - name: REDIS_CACHE_DB
-              value: 7
+              value: "7"
             - name: ORACLE_BASE_DSN
-              value: 172.30.10.227
+              value: "172.30.10.227"
             - name: ORACLE_USER
-              value: ujormdb001
+              value: "ujormdb001"
             - name: ORACLE_PASSWORD
-              value: kALneMdsin767
+              value: "kALneMdsin767"
             - name: ORACLE_SERVICE
-              value: OPDBDEV.SUBPRIV.VCNDEV.ORACLEVCN.COM
+              value: "OPDBDEV.SUBPRIV.VCNDEV.ORACLEVCN.COM"
             - name: ORACLE_ENCODING
-              value: UTF-8
+              value: "UTF-8"
             - name: ORACLE_PORT
-              value: 1521
+              value: "1521"
 
             - name: PERSEPHONE_KAFKA_BROKERS
               value: "172.30.10.105:9092"
