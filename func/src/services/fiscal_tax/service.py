@@ -3,7 +3,7 @@ from persephone_client import Persephone
 
 from src.domain.enums.persephone_queue import PersephoneQueue
 from src.domain.exceptions.model import InternalServerError
-from src.domain.models.request.model import TaxResidencesModel
+from src.domain.models.request.model import TaxResidences
 from src.repositories.step_validator.repository import StepValidator
 from src.repositories.user.repository import UserRepository
 
@@ -23,7 +23,7 @@ class FiscalTaxService:
 
     @classmethod
     async def update_external_fiscal_tax_residence(
-        cls, tax_residence: TaxResidencesModel, payload: dict
+        cls, tax_residence: TaxResidences, payload: dict
     ) -> None:
 
         await StepValidator.validate_onboarding_step(

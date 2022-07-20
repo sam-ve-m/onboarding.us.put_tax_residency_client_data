@@ -7,10 +7,10 @@ from src.repositories.sinacor_types.repository import SinacorTypesRepository
 from src.repositories.step_validator.repository import StepValidator
 from src.repositories.user.repository import UserRepository
 from src.services.fiscal_tax.service import FiscalTaxService
-from src.domain.models.request.model import TaxResidencesModel
+from src.domain.models.request.model import TaxResidences
 
 with patch.object(SinacorTypesRepository, "validate_country", return_value=True):
-    tax_residence_model_dummy = TaxResidencesModel(
+    tax_residence_model_dummy = TaxResidences(
         **{"tax_residences": [{"country": "USA", "tax_number": "1292-06"}]}
     )
 

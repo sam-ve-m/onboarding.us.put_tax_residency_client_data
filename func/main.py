@@ -10,7 +10,7 @@ from src.domain.exceptions.model import (
     InternalServerError,
     InvalidStepError,
 )
-from src.domain.models.request.model import TaxResidencesModel
+from src.domain.models.request.model import TaxResidencesMaker
 from src.domain.models.response.model import ResponseModel
 from src.services.fiscal_tax.service import FiscalTaxService
 
@@ -26,8 +26,7 @@ async def update_external_fiscal_tax(request: Request = request) -> Response:
         if heimdall_status != HeimdallStatusResponses.SUCCESS:
             raise UnauthorizedError()
 
-        tax_residence_model = TaxResidencesModel(**raw_params)
-        await tax_residence_model.validate_country()
+        tax_residence_model = await TaxResidencesMaker.create(**raw_params)
 
         payload = {
             "x_thebes_answer": x_thebes_answer,
