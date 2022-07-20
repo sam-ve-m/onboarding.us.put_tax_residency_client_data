@@ -18,7 +18,7 @@ class TaxResidences(BaseModel):
     tax_residences: List[TaxResidence]
 
 
-class TaxResidencesMaker(BaseModel):
+class TaxResidencesMaker:
     @classmethod
     async def create(cls, **data) -> TaxResidences:
         model_object = TaxResidences(**data)
