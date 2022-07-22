@@ -8,7 +8,7 @@ from src.infrastructures.iohttp.infrastructure import RequestInfrastructure
 
 class StepValidator(RequestInfrastructure):
     expected_step_br = "finished"
-    expected_step_us = {"external_fiscal_tax_confirmation", "finished"}
+    expected_step_us = "external_fiscal_tax_confirmation"
 
     @classmethod
     async def validate_step_br(cls, x_thebes_answer):
@@ -45,7 +45,7 @@ class StepValidator(RequestInfrastructure):
             Gladsheim.error(error=ex, message=message, response=steps_response)
             raise ex
 
-        is_correct_step = step in cls.expected_step_us
+        is_correct_step = step == cls.expected_step_us
         return is_correct_step
 
     @classmethod
