@@ -2,7 +2,6 @@ from http import HTTPStatus
 
 from etria_logger import Gladsheim
 from flask import request, Request, Response
-from heimdall_client import Heimdall, HeimdallStatusResponses
 
 from src.domain.enums.response.code import InternalCode
 from src.domain.exceptions.model import (
@@ -10,7 +9,7 @@ from src.domain.exceptions.model import (
     InternalServerError,
     InvalidStepError,
 )
-from src.domain.models.request.model import TaxResidencesMaker
+from src.domain.models.request.model import TaxResidenceRequest
 from src.domain.models.response.model import ResponseModel
 from src.services.fiscal_tax.service import FiscalTaxService
 
@@ -20,21 +19,14 @@ async def update_external_fiscal_tax(request: Request = request) -> Response:
     x_thebes_answer = request.headers.get("x-thebes-answer")
 
     try:
-        jwt_content, heimdall_status = await Heimdall.decode_payload(
-            jwt=x_thebes_answer
+        tax_residence_request = await TaxResidenceRequest.build(
+            x_thebes_answer=x_thebes_answer,
+            parameters=raw_params,
         )
-        if heimdall_status != HeimdallStatusResponses.SUCCESS:
-            raise UnauthorizedError()
 
-        tax_residence_model = await TaxResidencesMaker.create(**raw_params)
-
-        payload = {
-            "x_thebes_answer": x_thebes_answer,
-            "data": jwt_content["decoded_jwt"],
-        }
         external_fiscal_tax = (
             await FiscalTaxService.update_external_fiscal_tax_residence(
-                tax_residence=tax_residence_model, payload=payload
+                tax_residence_request=tax_residence_request
             )
         )
 

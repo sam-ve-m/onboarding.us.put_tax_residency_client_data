@@ -3,6 +3,7 @@ from typing import List
 
 from pydantic import BaseModel, constr
 
+from src.domain.models.jwt_data.model import Jwt
 from src.repositories.sinacor_types.repository import SinacorTypesRepository
 
 
@@ -35,3 +36,16 @@ class TaxResidencesMaker:
 
         if not are_countries_valid:
             raise ValueError
+
+
+class TaxResidenceRequest:
+    def __init__(self, x_thebes_answer: str, unique_id: str, tax_residences: TaxResidences):
+        self.x_thebes_answer = x_thebes_answer
+        self.unique_id = unique_id
+        self.tax_residences = tax_residences
+
+    @classmethod
+    async def build(cls, x_thebes_answer: str, parameters: dict):
+        jwt = await Jwt.build(jwt=x_thebes_answer)
+        tax_residences = await TaxResidencesMaker.create(**parameters)
+        return cls(x_thebes_answer=x_thebes_answer, unique_id=jwt.unique_id, tax_residences=tax_residences)
