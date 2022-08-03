@@ -17,23 +17,31 @@ with patch.object(SinacorTypesRepository, "validate_country", return_value=True)
         **{"tax_residences": [{"country": "USA", "tax_number": "1292-06"}]}
     )
 
-tax_residences_request_dummy = TaxResidenceRequest(x_thebes_answer="x_thebes_answer", unique_id="unique_id", tax_residences=tax_residence_model_dummy)
-tax_residences_data_dummy = TaxResidencesData(
-            unique_id=tax_residences_request_dummy.unique_id,
-            tax_residences=tax_residence_model_dummy.dict()
+tax_residences_request_dummy = TaxResidenceRequest(
+    x_thebes_answer="x_thebes_answer",
+    unique_id="unique_id",
+    tax_residences=tax_residence_model_dummy,
 )
-onboarding_step_correct_stub = UserOnboardingStep("finished", "external_fiscal_tax_confirmation")
+tax_residences_data_dummy = TaxResidencesData(
+    unique_id=tax_residences_request_dummy.unique_id,
+    tax_residences=tax_residence_model_dummy.dict(),
+)
+onboarding_step_correct_stub = UserOnboardingStep(
+    "finished", "external_fiscal_tax_confirmation"
+)
 onboarding_step_incorrect_stub = UserOnboardingStep("finished", "some_step")
 
 
 def test___model_tax_residences_data_to_persephone():
-    result = FiscalTaxService._FiscalTaxService__model_tax_residences_data_to_persephone(
-        tax_residences_data_dummy
+    result = (
+        FiscalTaxService._FiscalTaxService__model_tax_residences_data_to_persephone(
+            tax_residences_data_dummy
+        )
     )
     expected_result = {
-            "unique_id": tax_residences_data_dummy.unique_id,
-            "tax_residences": tax_residences_data_dummy.tax_residences,
-        }
+        "unique_id": tax_residences_data_dummy.unique_id,
+        "tax_residences": tax_residences_data_dummy.tax_residences,
+    }
     assert result == expected_result
 
 

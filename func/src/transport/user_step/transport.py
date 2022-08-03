@@ -9,43 +9,40 @@ from src.infrastructures.iohttp.infrastructure import RequestInfrastructure
 
 class StepChecker(RequestInfrastructure):
     @classmethod
-    async def _get_step_br(cls, x_thebes_answer):
+    async def _get_step_br(cls, x_thebes_answer: str) -> str:
         get_step_url = config("URL_ONBOARDING_STEP_BR")
         header = {"x_thebes_answer": x_thebes_answer}
         steps_response = None
-        step = None
         try:
             session = await cls.get_session()
             async with session.get(get_step_url, headers=header) as response:
                 steps_response = await response.json()
                 step = steps_response["result"]["current_step"]
+                return step
         except Exception as ex:
             message = "Error trying to get the onboarding step in BR"
             Gladsheim.error(error=ex, message=message, response=steps_response)
             raise ex
 
-        return step
-
     @classmethod
-    async def _get_step_us(cls, x_thebes_answer):
+    async def _get_step_us(cls, x_thebes_answer: str) -> str:
         get_step_url = config("URL_ONBOARDING_STEP_US")
         header = {"x_thebes_answer": x_thebes_answer}
         steps_response = None
-        step = None
         try:
             session = await cls.get_session()
             async with session.get(get_step_url, headers=header) as response:
                 steps_response = await response.json()
                 step = steps_response["result"]["current_step"]
+                return step
+
         except Exception as ex:
             message = "Error trying to get the onboarding step in US"
             Gladsheim.error(error=ex, message=message, response=steps_response)
             raise ex
 
-        return step
-
     @classmethod
-    async def get_onboarding_step(cls, x_thebes_answer):
+    async def get_onboarding_step(cls, x_thebes_answer: str) -> UserOnboardingStep:
         step_br = cls._get_step_br(x_thebes_answer=x_thebes_answer)
         step_us = cls._get_step_us(x_thebes_answer=x_thebes_answer)
         all_steps = await asyncio.gather(step_br, step_us)

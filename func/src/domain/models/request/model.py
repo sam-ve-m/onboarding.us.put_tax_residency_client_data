@@ -7,11 +7,8 @@ from src.domain.models.jwt_data.model import Jwt
 from src.repositories.sinacor_types.repository import SinacorTypesRepository
 
 
-class Country(BaseModel):
+class TaxResidence(BaseModel):
     country: constr(min_length=3, max_length=3)
-
-
-class TaxResidence(Country):
     tax_number: str
 
 
@@ -30,7 +27,9 @@ class TaxResidencesMaker:
     async def __validate_country(tax_residences_object: TaxResidences):
         validations = []
         for tax_residence in tax_residences_object.tax_residences:
-            validations.append(SinacorTypesRepository.validate_country(tax_residence.country))
+            validations.append(
+                SinacorTypesRepository.validate_country(tax_residence.country)
+            )
 
         are_countries_valid = all(await asyncio.gather(*validations))
 
@@ -39,7 +38,9 @@ class TaxResidencesMaker:
 
 
 class TaxResidenceRequest:
-    def __init__(self, x_thebes_answer: str, unique_id: str, tax_residences: TaxResidences):
+    def __init__(
+        self, x_thebes_answer: str, unique_id: str, tax_residences: TaxResidences
+    ):
         self.x_thebes_answer = x_thebes_answer
         self.unique_id = unique_id
         self.tax_residences = tax_residences
@@ -48,4 +49,8 @@ class TaxResidenceRequest:
     async def build(cls, x_thebes_answer: str, parameters: dict):
         jwt = await Jwt.build(jwt=x_thebes_answer)
         tax_residences = await TaxResidencesMaker.create(**parameters)
-        return cls(x_thebes_answer=x_thebes_answer, unique_id=jwt.unique_id, tax_residences=tax_residences)
+        return cls(
+            x_thebes_answer=x_thebes_answer,
+            unique_id=jwt.unique_id,
+            tax_residences=tax_residences,
+        )
