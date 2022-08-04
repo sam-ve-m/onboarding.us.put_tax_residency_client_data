@@ -4,8 +4,9 @@ from src.domain.exceptions.model import UnauthorizedError
 
 
 class Jwt:
-    def __init__(self, unique_id: str):
+    def __init__(self, unique_id: str, x_thebes_answer: str):
         self.unique_id = unique_id
+        self.x_thebes_answer = x_thebes_answer
 
     @staticmethod
     async def decode_and_validate_jwt(jwt: str):
@@ -18,4 +19,4 @@ class Jwt:
     async def build(cls, jwt: str):
         jwt_data = await cls.decode_and_validate_jwt(jwt=jwt)
         unique_id = jwt_data["decoded_jwt"]["user"]["unique_id"]
-        return cls(unique_id=unique_id)
+        return cls(unique_id=unique_id, x_thebes_answer=jwt)

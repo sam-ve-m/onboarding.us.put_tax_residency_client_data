@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from unittest.mock import patch
 
 import pytest
@@ -12,12 +13,20 @@ from src.repositories.user.repository import UserRepository
 from src.services.fiscal_tax.service import FiscalTaxService
 from src.transport.user_step.transport import StepChecker
 
+
+@dataclass
+class TaxResidenceRequestDummy:
+    x_thebes_answer: str
+    unique_id: str
+    tax_residences: TaxResidences
+
+
 with patch.object(SinacorTypesRepository, "validate_country", return_value=True):
     tax_residence_model_dummy = TaxResidences(
         **{"tax_residences": [{"country": "USA", "tax_number": "1292-06"}]}
     )
 
-tax_residences_request_dummy = TaxResidenceRequest(
+tax_residences_request_dummy = TaxResidenceRequestDummy(
     x_thebes_answer="x_thebes_answer",
     unique_id="unique_id",
     tax_residences=tax_residence_model_dummy,

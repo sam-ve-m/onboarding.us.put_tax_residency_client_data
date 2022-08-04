@@ -9,7 +9,8 @@ from src.domain.exceptions.model import (
     InternalServerError,
     InvalidStepError,
 )
-from src.domain.models.request.model import TaxResidenceRequest
+from src.domain.models.jwt_data.model import Jwt
+from src.domain.models.request.model import TaxResidenceRequest, TaxResidencesMaker
 from src.domain.models.response.model import ResponseModel
 from src.services.fiscal_tax.service import FiscalTaxService
 
@@ -19,9 +20,10 @@ async def update_external_fiscal_tax(request: Request = request) -> Response:
     x_thebes_answer = request.headers.get("x-thebes-answer")
 
     try:
-        tax_residence_request = await TaxResidenceRequest.build(
-            x_thebes_answer=x_thebes_answer,
-            parameters=raw_params,
+        jwt = await Jwt.build(x_thebes_answer)
+        tax_residences = await TaxResidencesMaker.create(**raw_params)
+        tax_residence_request = TaxResidenceRequest(
+            jwt=jwt, tax_residences=tax_residences
         )
 
         external_fiscal_tax = (
