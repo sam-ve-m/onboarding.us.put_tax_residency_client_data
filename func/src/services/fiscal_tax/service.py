@@ -18,7 +18,7 @@ class FiscalTaxService:
     ) -> None:
         tax_residences_data = TaxResidencesData(
             unique_id=tax_residence_request.unique_id,
-            tax_residences=tax_residence_request.tax_residences.dict(),
+            tax_residences=tax_residence_request.tax_residences,
         )
         await cls.__validate_onboarding_step(
             x_thebes_answer=tax_residence_request.x_thebes_answer
@@ -64,6 +64,6 @@ class FiscalTaxService:
     ) -> dict:
         data = {
             "unique_id": tax_residences_data.unique_id,
-            "tax_residences": tax_residences_data.tax_residences,
+            **tax_residences_data.tax_residences.dict(),
         }
         return data
