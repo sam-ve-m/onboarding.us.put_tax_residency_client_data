@@ -13,7 +13,7 @@ class CacheRepository(RedisInfrastructure):
     prefix = "jormungandr:"
 
     @classmethod
-    async def set(cls, key: str, value: dict, ttl: int = 0) -> None:
+    async def set(cls, key: str, value: dict, ttl: int = 0):
         """ttl in secounds"""
         redis = cls.get_redis()
         key = f"{cls.prefix}{key}"

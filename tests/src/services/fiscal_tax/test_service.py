@@ -2,16 +2,18 @@ from dataclasses import dataclass
 from unittest.mock import patch
 
 import pytest
+from decouple import Config
 from persephone_client import Persephone
 
-from src.domain.exceptions.model import InternalServerError, InvalidStepError
-from src.domain.models.request.model import TaxResidences, TaxResidenceRequest
-from src.domain.models.user_data.onboarding_step.model import UserOnboardingStep
-from src.domain.models.user_data.tax_residences.model import TaxResidencesData
-from src.repositories.sinacor_types.repository import SinacorTypesRepository
-from src.repositories.user.repository import UserRepository
-from src.services.fiscal_tax.service import FiscalTaxService
-from src.transport.user_step.transport import StepChecker
+with patch.object(Config, "__call__"):
+    from src.domain.exceptions.model import InternalServerError, InvalidStepError
+    from src.domain.models.request.model import TaxResidences, TaxResidenceRequest
+    from src.domain.models.user_data.onboarding_step.model import UserOnboardingStep
+    from src.domain.models.user_data.tax_residences.model import TaxResidencesData
+    from src.repositories.sinacor_types.repository import SinacorTypesRepository
+    from src.repositories.user.repository import UserRepository
+    from src.services.fiscal_tax.service import FiscalTaxService
+    from src.transport.user_step.transport import StepChecker
 
 
 @dataclass
@@ -33,7 +35,7 @@ tax_residences_request_dummy = TaxResidenceRequestDummy(
 )
 tax_residences_data_dummy = TaxResidencesData(
     unique_id=tax_residences_request_dummy.unique_id,
-    tax_residences=tax_residence_model_dummy.dict(),
+    tax_residences=tax_residence_model_dummy,
 )
 onboarding_step_correct_stub = UserOnboardingStep(
     "finished", "external_fiscal_tax_confirmation"
@@ -49,17 +51,18 @@ def test___model_tax_residences_data_to_persephone():
     )
     expected_result = {
         "unique_id": tax_residences_data_dummy.unique_id,
-        "tax_residences": tax_residences_data_dummy.tax_residences,
+        "tax_residences": tax_residences_data_dummy.tax_residences.dict()["tax_residences"],
     }
     assert result == expected_result
 
 
 @pytest.mark.asyncio
+@patch.object(Config, "__call__")
 @patch.object(UserRepository, "update_user")
 @patch.object(Persephone, "send_to_persephone")
 @patch.object(StepChecker, "get_onboarding_step")
 async def test_update_external_fiscal_tax_residence(
-    get_onboarding_step_mock, persephone_client_mock, update_user_mock
+    get_onboarding_step_mock, persephone_client_mock, update_user_mock, mocked_env
 ):
     get_onboarding_step_mock.return_value = onboarding_step_correct_stub
     persephone_client_mock.return_value = (True, 0)
@@ -76,11 +79,12 @@ async def test_update_external_fiscal_tax_residence(
 
 
 @pytest.mark.asyncio
+@patch.object(Config, "__call__")
 @patch.object(UserRepository, "update_user")
 @patch.object(Persephone, "send_to_persephone")
 @patch.object(StepChecker, "get_onboarding_step")
 async def test_update_external_fiscal_tax_residence_when_user_is_in_wrong_step(
-    get_onboarding_step_mock, persephone_client_mock, update_user_mock
+    get_onboarding_step_mock, persephone_client_mock, update_user_mock, mocked_env
 ):
     get_onboarding_step_mock.return_value = onboarding_step_incorrect_stub
     persephone_client_mock.return_value = (True, 0)
@@ -96,11 +100,12 @@ async def test_update_external_fiscal_tax_residence_when_user_is_in_wrong_step(
 
 
 @pytest.mark.asyncio
+@patch.object(Config, "__call__")
 @patch.object(UserRepository, "update_user")
 @patch.object(Persephone, "send_to_persephone")
 @patch.object(StepChecker, "get_onboarding_step")
 async def test_update_external_fiscal_tax_residence_when_cant_send_to_persephone(
-    get_onboarding_step_mock, persephone_client_mock, update_user_mock
+    get_onboarding_step_mock, persephone_client_mock, update_user_mock, mocked_env
 ):
     get_onboarding_step_mock.return_value = onboarding_step_correct_stub
     persephone_client_mock.return_value = (False, 0)
@@ -116,11 +121,12 @@ async def test_update_external_fiscal_tax_residence_when_cant_send_to_persephone
 
 
 @pytest.mark.asyncio
+@patch.object(Config, "__call__")
 @patch.object(UserRepository, "update_user")
 @patch.object(Persephone, "send_to_persephone")
 @patch.object(StepChecker, "get_onboarding_step")
 async def test_update_external_fiscal_tax_residence_when_cant_update_user_register(
-    get_onboarding_step_mock, persephone_client_mock, update_user_mock
+    get_onboarding_step_mock, persephone_client_mock, update_user_mock, mocked_env
 ):
     get_onboarding_step_mock.return_value = onboarding_step_correct_stub
     persephone_client_mock.return_value = (True, 0)

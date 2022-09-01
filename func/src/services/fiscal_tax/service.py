@@ -15,7 +15,7 @@ class FiscalTaxService:
     @classmethod
     async def update_external_fiscal_tax_residence(
         cls, tax_residence_request: TaxResidenceRequest
-    ) -> None:
+    ):
         tax_residences_data = TaxResidencesData(
             unique_id=tax_residence_request.unique_id,
             tax_residences=tax_residence_request.tax_residences,

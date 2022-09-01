@@ -12,7 +12,6 @@ class StepChecker(RequestInfrastructure):
     async def _get_step_br(cls, x_thebes_answer: str) -> str:
         get_step_url = config("URL_ONBOARDING_STEP_BR")
         header = {"x_thebes_answer": x_thebes_answer}
-        steps_response = None
         try:
             session = await cls.get_session()
             async with session.get(get_step_url, headers=header) as response:
@@ -21,14 +20,13 @@ class StepChecker(RequestInfrastructure):
                 return step
         except Exception as ex:
             message = "Error trying to get the onboarding step in BR"
-            Gladsheim.error(error=ex, message=message, response=steps_response)
+            Gladsheim.error(error=ex, message=message)
             raise ex
 
     @classmethod
     async def _get_step_us(cls, x_thebes_answer: str) -> str:
         get_step_url = config("URL_ONBOARDING_STEP_US")
         header = {"x_thebes_answer": x_thebes_answer}
-        steps_response = None
         try:
             session = await cls.get_session()
             async with session.get(get_step_url, headers=header) as response:
@@ -38,13 +36,13 @@ class StepChecker(RequestInfrastructure):
 
         except Exception as ex:
             message = "Error trying to get the onboarding step in US"
-            Gladsheim.error(error=ex, message=message, response=steps_response)
+            Gladsheim.error(error=ex, message=message)
             raise ex
 
     @classmethod
     async def get_onboarding_step(cls, x_thebes_answer: str) -> UserOnboardingStep:
         step_br = cls._get_step_br(x_thebes_answer=x_thebes_answer)
         step_us = cls._get_step_us(x_thebes_answer=x_thebes_answer)
-        all_steps = await asyncio.gather(step_br, step_us)
-        user_step = UserOnboardingStep(step_br=all_steps[0], step_us=all_steps[1])
+        step_br, step_us = await asyncio.gather(step_br, step_us)
+        user_step = UserOnboardingStep(step_br=step_br, step_us=step_us)
         return user_step

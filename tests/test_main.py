@@ -5,8 +5,10 @@ from flask import Flask
 from heimdall_client.bifrost import Heimdall, HeimdallStatusResponses
 from pytest import mark
 from werkzeug.test import Headers
+from decouple import Config
 
-from main import update_external_fiscal_tax
+with patch.object(Config, "__call__"):
+    from main import update_external_fiscal_tax
 from src.domain.exceptions.model import (
     InvalidStepError,
     InternalServerError,
