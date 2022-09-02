@@ -1,20 +1,24 @@
-from unittest.mock import patch
-
-from etria_logger import Gladsheim
+import logging.config
 from flask import Flask
-from heimdall_client.bifrost import Heimdall, HeimdallStatusResponses
 from pytest import mark
+from unittest.mock import patch
 from werkzeug.test import Headers
-from decouple import Config
+from decouple import RepositoryEnv, Config
 
-with patch.object(Config, "__call__"):
-    from main import update_external_fiscal_tax
-from src.domain.exceptions.model import (
-    InvalidStepError,
-    InternalServerError,
-)
-from src.repositories.sinacor_types.repository import SinacorTypesRepository
-from src.services.fiscal_tax.service import FiscalTaxService
+
+with patch.object(RepositoryEnv, "__init__", return_value=None):
+    with patch.object(Config, "__init__", return_value=None):
+        with patch.object(Config, "__call__"):
+            with patch.object(logging.config, "dictConfig"):
+                from etria_logger import Gladsheim
+                from heimdall_client.bifrost import Heimdall, HeimdallStatusResponses
+                from main import update_external_fiscal_tax
+                from src.domain.exceptions.model import (
+                    InvalidStepError,
+                    InternalServerError,
+                )
+                from src.repositories.sinacor_types.repository import SinacorTypesRepository
+                from src.services.fiscal_tax.service import FiscalTaxService
 
 request_ok = {"tax_residences": [{"country": "USA", "tax_number": "1292-06"}]}
 requests_invalid = [
