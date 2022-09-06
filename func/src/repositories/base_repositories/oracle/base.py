@@ -75,7 +75,7 @@ class OracleBaseRepository(IOracle):
         return new_rows
 
     @classmethod
-    async def execute(cls, sql, values) -> None:
+    async def execute(cls, sql, values):
         try:
             async with cls.infra.get_connection() as cursor:
                 await cursor.execute(sql, values)
