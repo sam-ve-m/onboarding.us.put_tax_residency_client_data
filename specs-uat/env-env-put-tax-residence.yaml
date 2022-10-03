@@ -10,7 +10,6 @@ spec:
     image: nexus.sigame.com.br/fission-builder-3.8:0.0.1
   imagepullsecret: "nexus-v3"
   keeparchive: false
-  poolsize: 3
   resources: {}
   runtime:
     image: nexus.sigame.com.br/fission-env-cx-async:0.0.1
@@ -29,9 +28,9 @@ spec:
             - name: MONGODB_USER_COLLECTION
               value: "users"
             - name: MONGO_CONNECTION_URL
-              value: "mongodb://jormungandr:LIwn1In32LdowPqma@172.30.10.75:41000/?authSource=admin&replicaSet=rslionx&readPreference=secondary"
+              value: "mongodb://jormungandr:MMhsdanNNds32Malmnwqyrte@172.30.18.223:41000,172.30.19.240:41000,172.30.19.71:41000/?authSource=admin&replicaSet=rslionx&readPreference=secondary&ssl=false"
             - name: REDIS_HOST_URL
-              value: "redis://jormungandr:oUjqwnmdDSA391dja@172.30.11.235:6379"
+              value: "redis://jormungandr:Mdn45oodsanPOhbrewbDS@172.30.19.183:6379"
             - name: REDIS_CACHE_DB
               value: "7"
             - name: ORACLE_BASE_DSN
@@ -68,4 +67,4 @@ spec:
               value: "[]"
             - name: ASGI_FRAMEWORK
               value: "HYPERCORN"
-  version: 2
+  version: 3
