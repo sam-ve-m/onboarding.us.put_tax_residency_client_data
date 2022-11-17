@@ -45,7 +45,9 @@ async def test__get_step_br(get_session_mock, etria_error_mock, mocked_env):
 @patch.object(Config, "__call__")
 @patch.object(Gladsheim, "error")
 @patch.object(StepChecker, "get_session")
-async def test__get_step_br_when_exception_occurs(get_session_mock, etria_error_mock, mocked_env):
+async def test__get_step_br_when_exception_occurs(
+    get_session_mock, etria_error_mock, mocked_env
+):
     get_session_mock.side_effect = Exception()
     with pytest.raises(Exception):
         result = await StepChecker._get_step_br("x-thebes-answer")
@@ -68,7 +70,9 @@ async def test__get_step_us(get_session_mock, etria_error_mock, mocked_env):
 @patch.object(Config, "__call__")
 @patch.object(Gladsheim, "error")
 @patch.object(StepChecker, "get_session")
-async def test__get_step_us_when_exception_occurs(get_session_mock, etria_error_mock, mocked_env):
+async def test__get_step_us_when_exception_occurs(
+    get_session_mock, etria_error_mock, mocked_env
+):
     get_session_mock.side_effect = Exception()
     with pytest.raises(Exception):
         result = await StepChecker._get_step_us("x-thebes-answer")
