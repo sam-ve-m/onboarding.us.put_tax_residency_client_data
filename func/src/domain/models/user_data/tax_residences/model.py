@@ -14,6 +14,6 @@ class TaxResidencesData(UserData):
     def get_data_representation(self) -> dict:
         data = {
             **self.tax_residences.dict(),
-            "external_exchange_requirements.us.external_fiscal_tax_confirmation": True
+            "external_exchange_requirements.us.external_fiscal_tax_confirmation": True,
         }
         return data

@@ -4,6 +4,7 @@ from typing import List
 from pydantic import BaseModel, constr
 
 from src.domain.models.jwt_data.model import Jwt
+from src.domain.models.user_data.device_info.model import DeviceInfo
 from src.repositories.sinacor_types.repository import SinacorTypesRepository
 
 
@@ -38,7 +39,10 @@ class TaxResidencesMaker:
 
 
 class TaxResidenceRequest:
-    def __init__(self, jwt: Jwt, tax_residences: TaxResidences):
+    def __init__(
+        self, jwt: Jwt, device_info: DeviceInfo, tax_residences: TaxResidences
+    ):
         self.x_thebes_answer = jwt.x_thebes_answer
+        self.device_info = device_info
         self.unique_id = jwt.unique_id
         self.tax_residences = tax_residences

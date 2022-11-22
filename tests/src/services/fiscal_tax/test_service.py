@@ -5,6 +5,8 @@ import pytest
 from decouple import Config
 from persephone_client import Persephone
 
+from src.domain.models.user_data.device_info.model import DeviceInfo
+
 with patch.object(Config, "__call__"):
     from src.domain.exceptions.model import InternalServerError, InvalidStepError
     from src.domain.models.request.model import TaxResidences, TaxResidenceRequest
@@ -21,6 +23,7 @@ class TaxResidenceRequestDummy:
     x_thebes_answer: str
     unique_id: str
     tax_residences: TaxResidences
+    device_info: DeviceInfo
 
 
 with patch.object(SinacorTypesRepository, "validate_country", return_value=True):
@@ -28,10 +31,12 @@ with patch.object(SinacorTypesRepository, "validate_country", return_value=True)
         **{"tax_residences": [{"country": "USA", "tax_number": "1292-06"}]}
     )
 
+stub_device_info = DeviceInfo({"precision": 1}, "")
 tax_residences_request_dummy = TaxResidenceRequestDummy(
     x_thebes_answer="x_thebes_answer",
     unique_id="unique_id",
     tax_residences=tax_residence_model_dummy,
+    device_info=stub_device_info,
 )
 tax_residences_data_dummy = TaxResidencesData(
     unique_id=tax_residences_request_dummy.unique_id,
@@ -46,12 +51,16 @@ onboarding_step_incorrect_stub = UserOnboardingStep("finished", "some_step")
 def test___model_tax_residences_data_to_persephone():
     result = (
         FiscalTaxService._FiscalTaxService__model_tax_residences_data_to_persephone(
-            tax_residences_data_dummy
+            tax_residences_data_dummy, stub_device_info
         )
     )
     expected_result = {
         "unique_id": tax_residences_data_dummy.unique_id,
-        "tax_residences": tax_residences_data_dummy.tax_residences.dict()["tax_residences"],
+        "tax_residences": tax_residences_data_dummy.tax_residences.dict()[
+            "tax_residences"
+        ],
+        "device_info": stub_device_info.device_info,
+        "device_id": stub_device_info.device_id,
     }
     assert result == expected_result
 

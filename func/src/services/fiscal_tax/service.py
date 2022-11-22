@@ -4,6 +4,7 @@ from persephone_client import Persephone
 from src.domain.enums.persephone_queue import PersephoneQueue
 from src.domain.exceptions.model import InternalServerError, InvalidStepError
 from src.domain.models.request.model import TaxResidenceRequest
+from src.domain.models.user_data.device_info.model import DeviceInfo
 from src.domain.models.user_data.tax_residences.model import TaxResidencesData
 from src.repositories.user.repository import UserRepository
 from src.transport.user_step.transport import StepChecker
@@ -23,7 +24,10 @@ class FiscalTaxService:
         await cls.__validate_onboarding_step(
             x_thebes_answer=tax_residence_request.x_thebes_answer
         )
-        await cls.__send_to_persephone(tax_residences_data=tax_residences_data)
+        await cls.__send_to_persephone(
+            tax_residences_data=tax_residences_data,
+            device_info=tax_residence_request.device_info,
+        )
         await cls.__update_user(tax_residences_data=tax_residences_data)
 
     @staticmethod
@@ -37,14 +41,18 @@ class FiscalTaxService:
             )
 
     @classmethod
-    async def __send_to_persephone(cls, tax_residences_data: TaxResidencesData):
+    async def __send_to_persephone(
+        cls, tax_residences_data: TaxResidencesData, device_info: DeviceInfo
+    ):
         (
             sent_to_persephone,
             status_sent_to_persephone,
         ) = await cls.persephone_client.send_to_persephone(
             topic=config("PERSEPHONE_TOPIC_USER"),
             partition=PersephoneQueue.USER_TAX_RESIDENCE_CONFIRMATION_US.value,
-            message=cls.__model_tax_residences_data_to_persephone(tax_residences_data),
+            message=cls.__model_tax_residences_data_to_persephone(
+                tax_residences_data, device_info
+            ),
             schema_name="user_tax_residences_us_schema",
         )
         if sent_to_persephone is False:
@@ -60,10 +68,12 @@ class FiscalTaxService:
 
     @staticmethod
     def __model_tax_residences_data_to_persephone(
-        tax_residences_data: TaxResidencesData,
+        tax_residences_data: TaxResidencesData, device_info: DeviceInfo
     ) -> dict:
         data = {
             "unique_id": tax_residences_data.unique_id,
             **tax_residences_data.tax_residences.dict(),
+            "device_info": device_info.device_info,
+            "device_id": device_info.device_id,
         }
         return data
