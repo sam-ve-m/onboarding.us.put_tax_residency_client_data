@@ -34,7 +34,11 @@ spec:
             - name: REDIS_CACHE_DB
               value: "7"
             - name: ORACLE_CONNECTION_STRING
-              value: "ujormdb001/kALneMdsin767@(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=172.30.10.227)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=OPDBDEV.SUBPRIV.VCNDEV.ORACLEVCN.COM)))"
+              value: "(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=172.30.10.227)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=OPDBDEV.SUBPRIV.VCNDEV.ORACLEVCN.COM)))"
+            - name: ORACLE_USER
+              value: "ujormdb001"
+            - name: ORACLE_PASSWORD
+              value: "kALneMdsin767"
             - name: PERSEPHONE_KAFKA_BROKERS
               value: "cluster-kafka-bootstrap.kafka.svc.cluster.local:9092"
             - name: ROOT_LOG_LEVEL

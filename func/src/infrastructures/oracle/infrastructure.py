@@ -12,7 +12,9 @@ class OracleInfrastructure:
     async def _get_pool(cls):
         if cls.pool is None:
             cls.pool = await cx_Oracle_async.create_pool(
-                config("ORACLE_CONNECTION_STRING"),
+                dsn=config("ORACLE_CONNECTION_STRING"),
+                user=config("ORACLE_USER"),
+                password=config("ORACLE_PASSWORD"),
                 min=2,
                 max=100,
                 increment=1
