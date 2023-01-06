@@ -5,8 +5,8 @@ from decouple import Config
 from pytest import mark
 
 with patch.object(Config, "__call__"):
-    from src.domain.models.user_data.model import UserData
-    from src.repositories.user.repository import UserRepository
+    from func.src.domain.models.user_data.model import UserData
+    from func.src.repositories.user.repository import UserRepository
 
 
 class UserDataDummy(UserData):

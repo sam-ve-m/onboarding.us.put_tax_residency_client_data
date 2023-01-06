@@ -5,7 +5,7 @@ from unittest.mock import patch
 from werkzeug.test import Headers
 from decouple import RepositoryEnv, Config
 
-from src.transport.device_info.transport import DeviceSecurity
+from func.src.transport.device_info.transport import DeviceSecurity
 
 with patch.object(RepositoryEnv, "__init__", return_value=None):
     with patch.object(Config, "__init__", return_value=None):
@@ -13,17 +13,15 @@ with patch.object(RepositoryEnv, "__init__", return_value=None):
             with patch.object(logging.config, "dictConfig"):
                 from etria_logger import Gladsheim
                 from heimdall_client.bifrost import Heimdall, HeimdallStatusResponses
-                from main import update_external_fiscal_tax
-                from src.domain.exceptions.model import (
+                from func.main import update_external_fiscal_tax
+                from func.src.domain.exceptions.model import (
                     InvalidStepError,
                     InternalServerError,
                     DeviceInfoRequestFailed,
                     DeviceInfoNotSupplied,
                 )
-                from src.repositories.sinacor_types.repository import (
-                    SinacorTypesRepository,
-                )
-                from src.services.fiscal_tax.service import FiscalTaxService
+                from func.src.repositories.sinacor_types.repository import SinacorTypesRepository
+                from func.src.services.fiscal_tax.service import FiscalTaxService
 
 request_ok = {"tax_residences": [{"country": "USA", "tax_number": "1292-06"}]}
 requests_invalid = [

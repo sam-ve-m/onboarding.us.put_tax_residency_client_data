@@ -3,19 +3,19 @@ from http import HTTPStatus
 from etria_logger import Gladsheim
 from flask import request, Request, Response
 
-from src.domain.enums.response.code import InternalCode
-from src.domain.exceptions.model import (
+from func.src.domain.enums.response.code import InternalCode
+from func.src.domain.exceptions.model import (
     UnauthorizedError,
     InternalServerError,
     InvalidStepError,
     DeviceInfoRequestFailed,
     DeviceInfoNotSupplied,
 )
-from src.domain.models.jwt_data.model import Jwt
-from src.domain.models.request.model import TaxResidenceRequest, TaxResidencesMaker
-from src.domain.models.response.model import ResponseModel
-from src.services.fiscal_tax.service import FiscalTaxService
-from src.transport.device_info.transport import DeviceSecurity
+from func.src.domain.models.jwt_data.model import Jwt
+from func.src.domain.models.request.model import TaxResidenceRequest, TaxResidencesMaker
+from func.src.domain.models.response.model import ResponseModel
+from func.src.services.fiscal_tax.service import FiscalTaxService
+from func.src.transport.device_info.transport import DeviceSecurity
 
 
 async def update_external_fiscal_tax(request: Request = request) -> Response:

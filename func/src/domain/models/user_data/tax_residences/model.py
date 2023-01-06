@@ -1,5 +1,5 @@
-from src.domain.models.request.model import TaxResidences
-from src.domain.models.user_data.model import UserData
+from func.src.domain.models.request.model import TaxResidences
+from func.src.domain.models.user_data.model import UserData
 
 
 class TaxResidencesData(UserData):
