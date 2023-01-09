@@ -3,8 +3,8 @@ from typing import Union
 
 from decouple import config
 
-from src.domain.exceptions.model import InternalServerError
-from src.infrastructures.redis.infrastructure import RedisInfrastructure
+from func.src.domain.exceptions.model import InternalServerError
+from func.src.infrastructures.redis.infrastructure import RedisInfrastructure
 
 
 class CacheRepository(RedisInfrastructure):

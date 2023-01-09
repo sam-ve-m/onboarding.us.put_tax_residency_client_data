@@ -3,9 +3,9 @@ from typing import List
 
 from pydantic import BaseModel, constr
 
-from src.domain.models.jwt_data.model import Jwt
-from src.domain.models.user_data.device_info.model import DeviceInfo
-from src.repositories.sinacor_types.repository import SinacorTypesRepository
+from func.src.domain.models.jwt_data.model import Jwt
+from func.src.domain.models.user_data.device_info.model import DeviceInfo
+from func.src.repositories.sinacor_types.repository import SinacorTypesRepository
 
 
 class TaxResidence(BaseModel):

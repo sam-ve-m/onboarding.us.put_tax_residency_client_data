@@ -1,7 +1,7 @@
 from hashlib import sha1
 
-from src.repositories.base_repositories.oracle.base import OracleBaseRepository
-from src.repositories.cache.repository import CacheRepository
+from func.src.repositories.base_repositories.oracle.base import OracleBaseRepository
+from func.src.repositories.cache.repository import CacheRepository
 
 
 class SinacorTypesRepository(OracleBaseRepository):

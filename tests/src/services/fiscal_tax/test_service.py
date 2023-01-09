@@ -5,17 +5,17 @@ import pytest
 from decouple import Config
 from persephone_client import Persephone
 
-from src.domain.models.user_data.device_info.model import DeviceInfo
+from func.src.domain.models.user_data.device_info.model import DeviceInfo
 
 with patch.object(Config, "__call__"):
-    from src.domain.exceptions.model import InternalServerError, InvalidStepError
-    from src.domain.models.request.model import TaxResidences, TaxResidenceRequest
-    from src.domain.models.user_data.onboarding_step.model import UserOnboardingStep
-    from src.domain.models.user_data.tax_residences.model import TaxResidencesData
-    from src.repositories.sinacor_types.repository import SinacorTypesRepository
-    from src.repositories.user.repository import UserRepository
-    from src.services.fiscal_tax.service import FiscalTaxService
-    from src.transport.user_step.transport import StepChecker
+    from func.src.domain.exceptions.model import InternalServerError, InvalidStepError
+    from func.src.domain.models.request.model import TaxResidences, TaxResidenceRequest
+    from func.src.domain.models.user_data.onboarding_step.model import UserOnboardingStep
+    from func.src.domain.models.user_data.tax_residences.model import TaxResidencesData
+    from func.src.repositories.sinacor_types.repository import SinacorTypesRepository
+    from func.src.repositories.user.repository import UserRepository
+    from func.src.services.fiscal_tax.service import FiscalTaxService
+    from func.src.transport.user_step.transport import StepChecker
 
 
 @dataclass

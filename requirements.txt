@@ -13,3 +13,9 @@ cx_Oracle==8.3.0
 cx_Oracle_async==0.3.3
 nest_asyncio==1.5.4
 httpx==0.23.0
+
+
+uvloop==0.17.0
+uvicorn==0.20.0
+asgiref==3.5.2
+hypercorn==0.13.2

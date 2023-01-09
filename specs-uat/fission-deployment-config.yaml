@@ -4,4 +4,4 @@
 apiVersion: fission.io/v1
 kind: DeploymentConfig
 name: onboarding-us-put-tax-residency-client-data
-uid: cbfc91e6-cf3a-430e-9d85-e66dde12be59
+uid: 4797c42c-5eb6-40bb-ab39-248643f07889

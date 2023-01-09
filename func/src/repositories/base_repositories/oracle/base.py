@@ -3,9 +3,9 @@ from typing import List
 import cx_Oracle
 from etria_logger import Gladsheim
 
-from src.core.interfaces.repositories.oracle.interface import IOracle
-from src.domain.exceptions.model import InternalServerError
-from src.infrastructures.oracle.infrastructure import OracleInfrastructure
+from func.src.core.interfaces.repositories.oracle.interface import IOracle
+from func.src.domain.exceptions.model import InternalServerError
+from func.src.infrastructures.oracle.infrastructure import OracleInfrastructure
 
 
 class OracleBaseRepository(IOracle):
